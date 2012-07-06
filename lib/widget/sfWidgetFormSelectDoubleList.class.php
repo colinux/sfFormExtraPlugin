@@ -132,13 +132,33 @@ EOF
     $unassociated = array();
     foreach ($choices as $key => $option)
     {
-      if (in_array(strval($key), $value))
+      if (is_array($option))
       {
-        $associated[$key] = $option;
+        $associated[$key] = array();
+        $unassociated[$key] = array();
+        
+        foreach ($option as $innerKey => $innerOption)
+        {
+          if (in_array(strval($innerKey), $value))
+          {
+            $associated[$key][$innerKey] = $innerOption;
+          }
+          else
+          {
+            $unassociated[$key][$innerKey] = $innerOption;
+          }
+        }
       }
       else
       {
-        $unassociated[$key] = $option;
+        if (in_array(strval($key), $value))
+        {
+          $associated[$key] = $option;
+        }
+        else
+        {
+          $unassociated[$key] = $option;
+        }
       }
     }
 
